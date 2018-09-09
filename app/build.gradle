@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+apply from: rootProject.projectDir.path+'/signingConfigs.gradle'
+
+android {
+    compileSdkVersion 10
+    buildToolsVersion "26.0.3"
+    defaultConfig {
+        applicationId "jp.ne.sakura.kkkon.andorid.supportintent"
+        minSdkVersion 10
+        targetSdkVersion 10
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "api"
+
+    productFlavors {
+        minApi10 {
+            dimension "api"
+            compileSdkVersion 10
+            minSdkVersion 10
+            //targetSdkVersion 24
+            targetSdkVersion 26
+            versionCode 1003 + android.defaultConfig.versionCode*10000
+        }
+        minApi14 {
+            dimension "api"
+            compileSdkVersion 26
+            minSdkVersion 14
+            targetSdkVersion 26
+            versionCode 1403 + android.defaultConfig.versionCode*10000
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    //compile 'com.android.support:appcompat-v7:27.+'
+    minApi10Compile 'com.android.support:appcompat-v7:24.2.1'
+    //minApi10Compile 'com.android.support:appcompat-v7:25.4.0'
+    minApi14Compile 'com.android.support:appcompat-v7:26.0.2'
+    //minApi14Compile 'com.android.support:appcompat-v7:26.1.0'
+    //minApi14Compile 'com.android.support:appcompat-v7:27.0.2'
+    //minApi14Compile 'com.android.support:appcompat-v7:27.1.1'
+
+    testCompile 'junit:junit:4.12'
+}
